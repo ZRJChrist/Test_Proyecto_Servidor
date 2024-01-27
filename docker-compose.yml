@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8.0.35-debian
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'nosecaensl'
+      MYSQL_USER: 'zrjchrist'
+      MYSQL_PASSWORD: 'zrjc_0107'
+      MYSQL_ROOT_PASSWORD: 'zrjc_0107'
+    ports:
+      - '3306:3306'
+    volumes:
+      - dbdata:/var/lib/mysql
+volumes:
+  dbdata:
