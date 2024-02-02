@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Province;
 use App\Models\Customer;
 use App\Models\User;
@@ -20,8 +21,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = User::isAdmin() ? Tasks::all() : Tasks::all()->where('operator_id', Auth::user()->id);
-        return view('tasks.tasks-index')->with(['tasks' => $tasks]);
+        return view('tasks.index')->with([
+            'tasks' => Tasks::getTasksIndex(),
+        ]);
     }
 
     /**
@@ -29,11 +31,11 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.tasks-create', [
+        return view('tasks.create', [
             'provinces' => Province::select('name', 'id')->get(),
             'status' => Status::select('id', 'status_description')->get(),
             'operators' => User::select('id', 'name')->where('is_admin', false)->get(),
-            'costumers' => Customer::select('id', 'name')->get(),
+            'customers' => Customer::select('id', 'name')->get(),
         ]);
     }
 
@@ -42,23 +44,8 @@ class TaskController extends Controller
      */
     public function store(TaskCreateRequest $request)
     {
-        Tasks::create([
-            'operator_id' => $request->operator,
-            'customer_id' => $request->customer,
-            'contact_name' => $request->name,
-            'contact_phone' => $request->phone,
-            'email' => $request->email,
-            'title' => $request->title,
-            'description' => $request->description,
-            'address' => $request->address,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
-            'province_id' => $request->province,
-            'status_id' => $request->status,
-            'scheduled_at' => $request->date,
-            'pre_notes' => $request->notes,
-        ]);
-        return redirect(RouteServiceProvider::HOME);
+        Tasks::create($request->all());
+        return redirect(RouteServiceProvider::TASKS);
     }
 
     /**
@@ -66,7 +53,7 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('tasks.show', ['task' => Tasks::getTaskShow($id)]);
     }
 
     /**
@@ -74,15 +61,23 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('tasks.edit', [
+            'task' => Tasks::find($id),
+            'provinces' => Province::select('name', 'id')->get(),
+            'status' => Status::select('id', 'status_description')->get(),
+            'operators' => User::select('id', 'name')->where('is_admin', false)->get(),
+            'customers' => Customer::select('id', 'name')->get(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaskUpdateRequest $request, Tasks $task)
     {
-        //
+        $task->fill($request->validated());
+        $task->save();
+        return redirect(RouteServiceProvider::TASKS);
     }
 
     /**
@@ -90,5 +85,8 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
+        $task = Tasks::find($id);
+        $task->delete();
+        return redirect(RouteServiceProvider::TASKS);
     }
 }

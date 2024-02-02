@@ -26,7 +26,7 @@ class PostalCode implements ValidationRule, DataAwareRule
     {
         $value = intval($value);
         $value = $value < 10000 ? substr(strval($value), 0, 1) : substr(strval($value), 0, 2);
-        if ($value !== $this->data['province']) {
+        if ($value !== $this->data['province_id']) {
             $fail("Province and Postal Code must be coincident");
         }
     }

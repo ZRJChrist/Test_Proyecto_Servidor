@@ -26,9 +26,9 @@ return new class extends Migration
             $table->foreignId('province_id')->references('id')->on('provinces');
             $table->foreignId('status_id')->references('id')->on('statuses');
             $table->date('scheduled_at');
-            $table->string('pre_notes');
-            $table->string('post_notes');
-            $table->string('pdf_file');
+            $table->string('pre_notes')->nullable();
+            $table->string('later_notes')->nullable();
+            $table->string('pdf_file')->nullable();
             $table->timestamps();
         });
     }

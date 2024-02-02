@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
@@ -31,13 +32,8 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
-    Route::controller(TaskController::class)->group(function () {
-        Route::get('/tasks', 'index')->name('tasks.index');
-        Route::get('/tasks/create', 'create')->name('tasks.create');
-        Route::post('/tasks', 'store')->name('tasks.store');
-        Route::get('/tasks/edit', 'edit')->name('tasks.edit');
-        Route::patch('/tasks', 'update')->name('tasks.update');
-    });
+    Route::resource('tasks', TaskController::class);
+    Route::resource('customers', CustomerController::class);
 });
 
 require __DIR__ . '/auth.php';

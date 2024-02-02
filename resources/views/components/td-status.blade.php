@@ -1,5 +1,4 @@
 @props(['isoStatus' => 'P'])
-
 @php
     $colorStatus = [
         'P' => ['class' => 'fa-solid fa-pause text-yellow-500'],
@@ -9,9 +8,10 @@
 @endphp
 
 <td class="px-6 py-4">
-    <div class="flex items-center">
-        <div class="me-1">
-            <i {{ $attributes->merge(['class' => $colorStatus[$isoStatus]['class']]) }}></i>
-        </div> {{ $slot }}
+    <div {!! $attributes->merge(['class' => 'flex items-center']) !!}>
+        <div class="mr-1">
+            <i class="{{ $colorStatus[$isoStatus]['class'] }}"></i>
+        </div>
+        {{ $slot }}
     </div>
 </td>
