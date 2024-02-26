@@ -25,7 +25,7 @@
     prevFocusable() { return this.focusables()[this.prevFocusableIndex()] || this.lastFocusable() },
     nextFocusableIndex() { return (this.focusables().indexOf(document.activeElement) + 1) % (this.focusables().length + 1) },
     prevFocusableIndex() { return Math.max(0, this.focusables().indexOf(document.activeElement)) - 1 },
-    task: { taskId: null, taskTitle: '' },
+    data: { id: null, inf: '' },
 }" x-init="$watch('show', value => {
     if (value) {
         document.body.classList.add('overflow-y-hidden');
@@ -34,7 +34,7 @@
         document.body.classList.remove('overflow-y-hidden');
     }
 })"
-    x-on:open-modal.window="console.log($event.detail); task.taskId = $event.detail.taskId; task.taskTitle = $event.detail.taskTitle;$event.detail.name == '{{ $name }}' ? show = true : null"
+    x-on:open-modal.window="console.log($event.detail); data.id = $event.detail.id; data.inf = $event.detail.inf;$event.detail.name == '{{ $name }}' ? show = true : null"
     x-on:close-modal.window="$event.detail.name == '{{ $name }}' ? show = false : null"
     x-on:close.stop="show = false" x-on:keydown.escape.window="show = false"
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"

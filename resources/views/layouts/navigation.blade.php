@@ -21,9 +21,14 @@
                     <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
                         {{ __('Tasks') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
-                        {{ __('Customers') }}
-                    </x-nav-link>
+                    @if (Auth::user()->is_admin)
+                        <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
+                            {{ __('Customers') }}
+                        </x-nav-link>
+                        <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
+                            {{ __('Employees') }}
+                        </x-responsive-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -87,9 +92,14 @@
             <x-responsive-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
                 {{ __('Tasks') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
-                {{ __('Customers') }}
-            </x-responsive-nav-link>
+            @if (Auth::user()->is_admin)
+                <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
+                    {{ __('Customers') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
+                    {{ __('Employees') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

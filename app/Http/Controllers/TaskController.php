@@ -35,7 +35,7 @@ class TaskController extends Controller
             'provinces' => Province::select('name', 'id')->get(),
             'status' => Status::select('id', 'status_description')->get(),
             'operators' => User::select('id', 'name')->where('is_admin', false)->get(),
-            'customers' => Customer::select('id', 'name')->get(),
+            'customers' => Customer::select('id', 'name')->where('active', '=', 1)->get(),
         ]);
     }
 
@@ -51,18 +51,18 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Tasks $task)
     {
-        return view('tasks.show', ['task' => Tasks::getTaskShow($id)]);
+        return view('tasks.show', ['task' => Tasks::getTaskShow($task->id)]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tasks $task)
     {
         return view('tasks.edit', [
-            'task' => Tasks::find($id),
+            'task' => $task,
             'provinces' => Province::select('name', 'id')->get(),
             'status' => Status::select('id', 'status_description')->get(),
             'operators' => User::select('id', 'name')->where('is_admin', false)->get(),
@@ -83,9 +83,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tasks $task)
     {
-        $task = Tasks::find($id);
         $task->delete();
         return redirect(RouteServiceProvider::TASKS);
     }

@@ -12,4 +12,5 @@
     <x-text-input placeholder="" :id="$name" :type="$type" :name="$name" :value="$value" required />
     <x-input-label for="$name" :icon="$icon" :value="$title" />
     <x-input-error :messages="$errors->get($name)" class="mt-2" />
+    {{ $slot }}
 </div>

@@ -1,20 +1,15 @@
 <x-app-layout>
-
-    {{-- <x-slot name="header">
-
-    </x-slot> --}}
     <div class="py-12">
         <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm pb-2 sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <div class="relative h-14 w-auto">
-                            <a href="{{ route('customers.create') }}">
+                            <a href="{{ route('employees.create') }}">
                                 <x-outline-buttons :class="__('px-5 absolute bottom-1 end-2')" :color="__('blue')">
                                     {{ __('Add') }}
                                 </x-outline-buttons>
                             </a>
-
                         </div>
                         <div class="w-full border-spacing-2 text-sm text-left text-gray-500 dark:text-gray-400">
                             <div
@@ -27,7 +22,7 @@
                                         Inf {{ __('Date') }}
                                     </div>
                                     <div class="px-6 py-3 ">
-                                        {{ __('Status') }}
+                                        {{ __('Rol') }}
                                     </div>
                                     <div class="px-6 py-3 ">
                                         {{ __('Actions') }}
@@ -35,11 +30,9 @@
                                 </div>
                             </div>
                             <div>
-                                @foreach ($customers as $customer)
+                                @foreach ($users as $user)
                                     @php
-                                        $statusCustomer = $customer->active == 1 ? 'green' : 'red';
-                                        $colorStatus = $customer->active == 1 ? 'red' : 'indigo';
-                                        $textStatusBtn = $customer->active == 1 ? 'Deactivate' : 'Active';
+                                        $statusCustomer = $user->is_admin == 1 ? 'green' : 'red';
                                     @endphp
                                     <div
                                         class="md:flex md:border-0 md:m-0 my-2 mx-2 rounded-lg md:rounded-none border border-gray-400 grid grid-cols-1 md:bg-white bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700 transition ease-in-out duration-100 md:hover:dark:bg-gray-700 md:hover:bg-gray-100 ">
@@ -47,13 +40,13 @@
                                             class="md:w-3/12 md:order-1 order-2 px-6 py-4 text-gray-900  dark:text-white">
                                             <div class="ps-3">
                                                 <div class="text-pretty font-semibold">{{ __('Name') }}:
-                                                    {{ $customer->name }}</div>
+                                                    {{ $user->name }}</div>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Phone') }}:
-                                                    {{ $customer->phone }}</div>
+                                                    {{ $user->phone }}</div>
                                                 <div class="font-normal dark:text-gray-300">Email:
-                                                    {{ $customer->email }}</div>
-                                                <div class="font-normal dark:text-gray-300">CIF: <span
-                                                        class="blur-sm hover:blur-none">{{ $customer->cif }} </span>
+                                                    {{ $user->email }}</div>
+                                                <div class="font-normal dark:text-gray-300">DNI: <span
+                                                        class="blur-sm hover:blur-none">{{ $user->dni }} </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -65,9 +58,9 @@
                                                     Info:
                                                 </span>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Registered') }}:
-                                                    {{ $customer->created_at }}</div>
+                                                    {{ $user->created_at }}</div>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Updated') }}:
-                                                    {{ $customer->updated_at }}</div>
+                                                    {{ $user->updated_at }}</div>
                                             </div>
                                         </div>
                                         <div
@@ -75,7 +68,7 @@
                                             <div class="ps-3">
                                                 <span class="md:hidden ">Status Customer:</span>
                                                 <x-badges :type="$statusCustomer">
-                                                    {{ __($customer->active == 1 ? 'Active' : 'Deactivated') }}
+                                                    {{ __($user->is_admin == 1 ? 'Admi' : 'Operator') }}
                                                 </x-badges>
                                             </div>
                                         </div>
@@ -83,20 +76,13 @@
                                             <div
                                                 class="max-md:grid-flow-col max-md:gap-4 max-[1300px]:grid max-[1300px]:grid-cols-1 max-[1300px]:w-fit max-[1300px]:space-x-0 flex space-x-5 ">
                                                 <a class="w-fit mb-2"
-                                                    href="{{ route('customers.edit', ['customer' => $customer->id]) }}">
+                                                    href="{{ route('customers.edit', ['customer' => $user->id]) }}">
                                                     <x-outline-buttons :class="__('py-2.5 px-5 transition ease-in-out duration-100')" :color="__('yellow')">
                                                         {{ __('Edit') }}
                                                     </x-outline-buttons>
                                                 </a>
-                                                <a class="w-fit mb-2" x-data
-                                                    x-on:click="$dispatch('open-modal', {name: 'deactivate-customer', id: {{ $customer->id }}, 'inf':{{ $customer->active }}})">
-                                                    <x-outline-buttons
-                                                        class="py-2.5 px-5 transition ease-in-out duration-100"
-                                                        :color="__($colorStatus)"> {{ __($textStatusBtn) }}
-                                                    </x-outline-buttons>
-                                                </a>
                                                 <a class="w-fit mb-2"
-                                                    href="{{ route('customers.show', ['customer' => $customer->id]) }}">
+                                                    href="{{ route('customers.show', ['customer' => $user->id]) }}">
                                                     <x-outline-buttons
                                                         class="py-2.5 px-5 transition ease-in-out duration-100"
                                                         :color="__('green')">
@@ -112,12 +98,12 @@
                     </div>
                 </div>
                 <div class="mb-2 mx-2">
-                    {{ $customers->links() }}
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>
     </div>
-    <x-modal :name="__('deactivate-customer')">
+    {{-- <x-modal :name="__('deactivate-customer')">
         <div>
             <div class="p-6">
                 <h2 class="text-lg font-extrabold text-red-500">
@@ -162,5 +148,5 @@
                 </div>
             </div>
         </div>
-    </x-modal>
+    </x-modal> --}}
 </x-app-layout>

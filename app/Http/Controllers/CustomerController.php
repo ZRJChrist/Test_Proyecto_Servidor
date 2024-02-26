@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use App\Models\Country;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Http\Requests\CustomerRequest;
 
 class CustomerController extends Controller
 {
@@ -14,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customers.index', ['customers' => Customer::getCustomersIndex(2)]);
+        return view('customers.index', ['customers' => Customer::getCustomersIndex()]);
     }
 
     /**
@@ -23,37 +25,52 @@ class CustomerController extends Controller
     public function create()
     {
         return view('customers.create', [
-            'country' => Country::select('name', 'id')->get()
+            'country' => Country::select('name', 'id')->get(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
+        Customer::create($request->all());
+        return redirect(RouteServiceProvider::CUSTOMERS);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Customer $customer)
     {
-        return view('customers.show', []);
+        return view('customers.show', [
+            'customer' => $customer,
+            'country' => Country::find($customer->country_id),
+            'tasks' => Customer::getTaskOfCustomer($customer->id),
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Customer $customer)
     {
+        return view('customers.edit', [
+            'customer' => $customer,
+            'country' => Country::select('name', 'id')->get(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customer $customer)
+    public function update(CustomerRequest $request, Customer $customer)
     {
+        $customer->fill($request->validated());
+        $customer->save();
+
+        $referer = $request->headers->get('referer');
+        return $referer  == route('customers.show', [$customer]) ? redirect(RouteServiceProvider::CUSTOMERS . '/' . $customer->id) : redirect(RouteServiceProvider::CUSTOMERS);
     }
 
     /**
@@ -61,5 +78,7 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
+
+        return redirect(RouteServiceProvider::CUSTOMERS);
     }
 }

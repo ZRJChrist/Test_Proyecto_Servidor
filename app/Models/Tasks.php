@@ -36,17 +36,23 @@ class Tasks extends Model
      * @param int $numElements  Numero de elementos que se mostraran por pagina
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    private static function getAllInfTasks($numElements)
+    private static function getAllInfTasks()
     {
         $query = DB::table('tasks as t')
             ->join('statuses as s', 't.status_id', '=', 's.id')
             ->join('provinces as p', 't.province_id', '=', 'p.id')
+            ->orderBy('created_at', 'desc')
             ->select('t.*', 's.status_description', 's.iso as status_iso', 'p.name as name_province');
 
         return User::isAdmin() ?
-            $query->paginate($numElements) :
-            $query->where('operator_id', Auth::user()->id)->paginate($numElements);
+            $query :
+            $query->where('operator_id', Auth::user()->id);
     }
+    /**
+     * @Author ZRJChrist
+     * @param $id Id Task
+     * @return Illuminate\Support\Collection
+     */
     private static function getAllInfOneTask($id)
     {
         return DB::table('tasks as t')
@@ -80,8 +86,9 @@ class Tasks extends Model
      */
     public static function getTasksIndex(int $numElements = self::ELEMENTS)
     {
-        return self::getAllInfTasks($numElements);
+        return self::getAllInfTasks()->paginate($numElements);
     }
+
     public static function getTaskShow($id)
     {
         return self::getAllInfOneTask($id);

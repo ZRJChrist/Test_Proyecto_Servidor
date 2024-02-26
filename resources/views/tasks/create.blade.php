@@ -1,11 +1,4 @@
 <x-app-layout>
-    {{-- @vite(['resources/js/test.js']) --}}
-
-    {{-- <x-slot name="header">
-        <div class="mx-auto text-center">
-            <h1 class="text-2xl font-bold dark:text-white">New Task</h1>
-        </div>
-    </x-slot> --}}
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 

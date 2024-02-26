@@ -17,17 +17,19 @@
                             @csrf
 
                             <div class="grid md:grid-cols-2 md:gap-6">
-                                <x-group-input :icon="__('fa-solid fa-heading me-1')" :name="__('cif')" />
-                                <x-group-input :icon="__('fa-solid fa-heading me-1')" :name="__('name')" />
+                                <x-group-input :icon="__('fa-solid fa-id-card me-1')" :name="__('cif')" />
+                                <x-group-input :icon="__('fa-solid fa-user-large me-1')" :name="__('name')" />
                             </div>
                             <div class="grid md:grid-cols-2 md:gap-6">
                                 <x-group-select class="mt-5 font-normal" :name="__('country_id')" :default="true"
                                     :title="__('Country')" :data="$country" />
-                                <x-group-input :icon="__('fa-solid fa-heading me-1')" :name="__('phone')" />
+                                <x-group-input :icon="__('fa-solid fa-phone me-1')" :name="__('phone')">
+                                    <small class="absolute dark:text-gray-400">Ej: +34123123123</small>
+                                </x-group-input>
                             </div>
 
-                            <x-group-input :icon="__('fa-solid fa-heading me-1')" :name="__('email')" />
-                            <x-group-input :icon="__('fa-solid fa-heading me-1')" :title="__('Acount Number')" :name="__('account_number')" />
+                            <x-group-input :icon="__('fa-solid fa-envelope me-1')" :name="__('email')" />
+                            <x-group-input :icon="__('fa-solid fa-money-check-dollar me-1')" :title="__('Acount Number')" :name="__('account_number')" />
 
                             <x-primary-button class="px-5 py-2.5">{{ __('Submit') }}</x-primary-button>
                     </form>
