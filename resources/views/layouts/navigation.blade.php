@@ -25,9 +25,12 @@
                         <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
                             {{ __('Customers') }}
                         </x-nav-link>
-                        <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
+                        <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
                             {{ __('Employees') }}
-                        </x-responsive-nav-link>
+                        </x-nav-link>
+                        <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')">
+                            {{ __('Payments') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -37,10 +40,9 @@
                 <x-dropdown width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            class="px-3 py-2 dark:bg-slate-800 bg-slate-100 flex relative rounded-lg z-10 hover:shadow-md dark:text-gray-300 transition-all overflow-hidden duration-200 before:absolute before:top-0 before:left-0 before:z-[-1] before:h-full before:w-0 before:content-[''] before:transition-all before:duration-200 before:dark:bg-slate-700 before:bg-slate-300 hover:before:w-full ">
                             <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
+                            <div class="ms-1 mt-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"

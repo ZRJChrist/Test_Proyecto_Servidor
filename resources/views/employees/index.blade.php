@@ -58,9 +58,11 @@
                                                     Info:
                                                 </span>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Registered') }}:
-                                                    {{ $user->created_at }}</div>
+                                                    {{ \Carbon\Carbon::parse($user->created_at)->format('d-M-Y H:i:s') }}
+                                                </div>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Updated') }}:
-                                                    {{ $user->updated_at }}</div>
+                                                    {{ \Carbon\Carbon::parse($user->updated_at)->format('d-M-Y H:i:s') }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div
@@ -76,19 +78,19 @@
                                             <div
                                                 class="max-md:grid-flow-col max-md:gap-4 max-[1300px]:grid max-[1300px]:grid-cols-1 max-[1300px]:w-fit max-[1300px]:space-x-0 flex space-x-5 ">
                                                 <a class="w-fit mb-2"
-                                                    href="{{ route('customers.edit', ['customer' => $user->id]) }}">
+                                                    href="{{ route('employees.edit', ['employee' => $user->id]) }}">
                                                     <x-outline-buttons :class="__('py-2.5 px-5 transition ease-in-out duration-100')" :color="__('yellow')">
                                                         {{ __('Edit') }}
                                                     </x-outline-buttons>
                                                 </a>
-                                                <a class="w-fit mb-2"
-                                                    href="{{ route('customers.show', ['customer' => $user->id]) }}">
+                                                {{-- <a class="w-fit mb-2"
+                                                    href="{{ route('employees.show', ['employee' => $user->id]) }}">
                                                     <x-outline-buttons
                                                         class="py-2.5 px-5 transition ease-in-out duration-100"
                                                         :color="__('green')">
                                                         {{ __('Show') }}
                                                     </x-outline-buttons>
-                                                </a>
+                                                </a> --}}
                                             </div>
                                         </div>
                                     </div>

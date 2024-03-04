@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->references('id')->on('customers');
             $table->string('concept');
-            $table->decimal('amount', $precision = 8, $scale = 2);
+            $table->decimal('amount', 10, 2);
             $table->boolean('paid');
             $table->dateTime('payment_date');
             $table->string('notes');

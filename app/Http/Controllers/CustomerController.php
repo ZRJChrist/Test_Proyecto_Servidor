@@ -55,6 +55,8 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        $phone = explode('-', $customer->phone);
+        $customer->phone = end($phone);
         return view('customers.edit', [
             'customer' => $customer,
             'country' => Country::select('name', 'id')->get(),

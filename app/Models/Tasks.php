@@ -34,7 +34,7 @@ class Tasks extends Model
     /**
      * @Author ZRJChrist
      * @param int $numElements  Numero de elementos que se mostraran por pagina
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     * @return Illuminate\Support\Collection
      */
     private static function getAllInfTasks()
     {
@@ -43,10 +43,9 @@ class Tasks extends Model
             ->join('provinces as p', 't.province_id', '=', 'p.id')
             ->orderBy('created_at', 'desc')
             ->select('t.*', 's.status_description', 's.iso as status_iso', 'p.name as name_province');
-
         return User::isAdmin() ?
             $query :
-            $query->where('operator_id', Auth::user()->id);
+            $query->where('operator_id', Auth::user()->id)->where('t.active', TRUE);
     }
     /**
      * @Author ZRJChrist

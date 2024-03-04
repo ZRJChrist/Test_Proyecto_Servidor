@@ -24,7 +24,6 @@
                                 <x-group-select class="mt-5 font-normal" :name="__('country_id')" :default="true"
                                     :title="__('Country')" :data="$country" />
                                 <x-group-input :icon="__('fa-solid fa-phone me-1')" :name="__('phone')">
-                                    <small class="absolute dark:text-gray-400">Ej: +34123123123</small>
                                 </x-group-input>
                             </div>
 

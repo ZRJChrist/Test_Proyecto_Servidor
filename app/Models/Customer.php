@@ -40,4 +40,8 @@ class Customer extends Model
     {
         return self::getAllInfCustomers()->paginate($numElements);
     }
+    public function country()
+    {
+        return $this->hasOne(Country::class);
+    }
 }

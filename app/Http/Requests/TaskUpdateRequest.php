@@ -13,7 +13,10 @@ class TaskUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return User::isAdmin();
+        if (User::isAdmin()) {
+            return true;
+        }
+        return $this->user()->id === $this->route('task')->operator_id;
     }
 
     /**
@@ -23,7 +26,14 @@ class TaskUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        if (!User::isAdmin()) {
+            return [
+                'status_id' => ['required', 'exists:statuses,id'],
+                'later_notes' => ['nullable', 'max:255'],
+            ];
+        }
+
+        return  [
             'title' => ['required', 'max:255'],
             'customer_id' => ['required', 'exists:customers,id'],
             'operator_id' => ['required', 'different:1', 'exists:users,id'],
@@ -38,6 +48,7 @@ class TaskUpdateRequest extends FormRequest
             'status_id' => ['required', 'exists:statuses,id'],
             'scheduled_at' => ['required', 'date_format:Y-m-d', 'after:now'],
             'pre_notes' => ['nullable', 'max:255'],
+            'later_notes' => ['nullable', 'max:255'],
         ];
     }
 }

@@ -17,6 +17,10 @@
                                 <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">
                                     {{ $task->description }}
                                 </p>
+                                <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-2">
+                                    <span class="text-white">Finish date:</span>
+                                    {{ \Carbon\Carbon::parse($task->scheduled_at)->format('d-M-Y') }}
+                                </p>
                             </div>
                             <div class=" border border-black dark:border-gray-500 rounded-lg md:mx-5 p-2">
                                 <span>Previous Notes: </span>
@@ -110,12 +114,14 @@
                                             {{ __('Edit') }}
                                         </x-outline-buttons>
                                     </a>
-                                    <a class="w-fit mb-2" x-data
-                                        x-on:click="$dispatch('open-modal', {name: 'delete-task', taskId: {{ $task->id }}, taskTitle: '{{ $task->title }}' })">
-                                        <x-outline-buttons :class="__('py-2.5 px-5 transition ease-in-out duration-100')" :color="__('red')">
-                                            {{ __('Delete') }}
-                                        </x-outline-buttons>
-                                    </a>
+                                    @if (Auth::user()->is_admin)
+                                        <a class="w-fit mb-2" x-data
+                                            x-on:click="$dispatch('open-modal', {name: 'delete-task', taskId: {{ $task->id }}, taskTitle: '{{ $task->title }}' })">
+                                            <x-outline-buttons :class="__('py-2.5 px-5 transition ease-in-out duration-100')" :color="__('red')">
+                                                {{ __('Delete') }}
+                                            </x-outline-buttons>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -123,56 +129,63 @@
                 </div>
             </div>
         </div>
-        <x-modal :name="__('delete-task')">
-            <div>
-                <div class="p-6">
-                    <h2 class="text-lg font-extrabold text-red-500">
-                        {{ __('Are you sure you want to delete this task ?') }}
-                    </h2>
-                    <p class="mt-1 text-md text-gray-600 dark:text-gray-400">
-                        {{ __('Before proceeding, we want to alert you about the consequences of deleting this task. The action you are about to take is irreversible and will result in the permanent loss of information associated with this task. Make sure to consider the following:') }}
-                    </p>
+        @if (Auth::user()->is_admin)
+            <x-modal :name="__('delete-task')">
+                <div>
+                    <div class="p-6">
+                        <h2 class="text-lg font-extrabold text-red-500">
+                            {{ __('Are you sure you want to delete this task ?') }}
+                        </h2>
+                        <p class="mt-1 text-md text-gray-600 dark:text-gray-400">
+                            {{ __('Before proceeding, we want to alert you about the consequences of deleting this task. The action you are about to take is irreversible and will result in the permanent loss of information associated with this task. Make sure to consider the following:') }}
+                        </p>
 
-                    <ol class="list-decimal pl-6 mb-4 mt-1 text-md text-gray-600 dark:text-gray-400">
-                        <li class="mb-2"><span class="text-red-500 text-bold">Irreversible Data Loss:</span> All
-                            information,
-                            comments, and attached files related
-                            to this task will be permanently deleted. You won't be able to recover them once the action
-                            is
-                            completed.</li>
-                        <li class="mb-2"><span class="text-red-500 text-bold">Impact on History:</span>Deleting this
-                            task
-                            will affect the history and tracking of
-                            associated activities. Any reference or link to this task will no longer be available.</li>
-                        <li class="mb-2"><span class="text-red-500 text-bold">Notified Collaborators:</span> If you
-                            shared
-                            this task with other collaborators, be
-                            aware that they will lose access to it once it is deleted.</li>
-                        <li class="mb-2"><span class="text-red-500 text-bold">Documented Decisions:</span>If this
-                            task contains important decisions, critical
-                            comments, or any crucial information, consider archiving it or extracting relevant
-                            information
-                            before deletion.</li>
-                    </ol>
+                        <ol class="list-decimal pl-6 mb-4 mt-1 text-md text-gray-600 dark:text-gray-400">
+                            <li class="mb-2"><span class="text-red-500 text-bold">Irreversible Data Loss:</span> All
+                                information,
+                                comments, and attached files related
+                                to this task will be permanently deleted. You won't be able to recover them once the
+                                action
+                                is
+                                completed.</li>
+                            <li class="mb-2"><span class="text-red-500 text-bold">Impact on History:</span>Deleting
+                                this
+                                task
+                                will affect the history and tracking of
+                                associated activities. Any reference or link to this task will no longer be available.
+                            </li>
+                            <li class="mb-2"><span class="text-red-500 text-bold">Notified Collaborators:</span> If
+                                you
+                                shared
+                                this task with other collaborators, be
+                                aware that they will lose access to it once it is deleted.</li>
+                            <li class="mb-2"><span class="text-red-500 text-bold">Documented Decisions:</span>If this
+                                task contains important decisions, critical
+                                comments, or any crucial information, consider archiving it or extracting relevant
+                                information
+                                before deletion.</li>
+                        </ol>
 
-                    <p class="mb-4 mt-1 text-sm text-gray-600 dark:text-gray-400">By confirming the deletion of the
-                        task,
-                        you accept responsibility for the
-                        aforementioned consequences. Please reflect on the importance of this action and proceed with
-                        caution.</p>
-                    <div class="flex px-5 justify-between">
-                        <button x-on:click="$dispatch('close-modal', {name: 'delete-task'})"
-                            class="bg-gray-300
+                        <p class="mb-4 mt-1 text-sm text-gray-600 dark:text-gray-400">By confirming the deletion of the
+                            task,
+                            you accept responsibility for the
+                            aforementioned consequences. Please reflect on the importance of this action and proceed
+                            with
+                            caution.</p>
+                        <div class="flex px-5 justify-between">
+                            <button x-on:click="$dispatch('close-modal', {name: 'delete-task'})"
+                                class="bg-gray-300
                             hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
-                        <form x-bind:action="`{{ url()->current() }}/${task.taskId}`" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">{{ __('Delete') }}
-                                {{ __('Task') }}</button>
-                        </form>
+                            <form x-bind:action="`{{ url()->current() }}/${task.taskId}`" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">{{ __('Delete') }}
+                                    {{ __('Task') }}</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </x-modal>
+            </x-modal>
+        @endif
 </x-app-layout>

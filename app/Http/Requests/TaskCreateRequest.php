@@ -13,7 +13,6 @@ class TaskCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Todo Allow customers to make this request
         return User::isAdmin();
     }
 

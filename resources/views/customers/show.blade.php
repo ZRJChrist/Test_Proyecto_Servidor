@@ -50,13 +50,6 @@
                                             {{ __($textStatusBtn) }}
                                         </x-outline-buttons>
                                     </a>
-                                    <a class="w-fit mb-2" x-data
-                                        x-on:click="$dispatch('open-modal', {name: 'delete-customer', taskId: {{ $customer->id }}})">
-                                        <x-outline-buttons class="py-2.5 px-5 transition ease-in-out duration-100"
-                                            :color="__('red')">
-                                            {{ __('Delete') }}
-                                        </x-outline-buttons>
-                                    </a>
                                 </div>
                             </div>
                         </div>

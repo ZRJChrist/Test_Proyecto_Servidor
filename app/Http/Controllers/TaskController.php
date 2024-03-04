@@ -67,6 +67,7 @@ class TaskController extends Controller
             'status' => Status::select('id', 'status_description')->get(),
             'operators' => User::select('id', 'name')->where('is_admin', false)->get(),
             'customers' => Customer::select('id', 'name')->get(),
+            'is_admin' => User::isAdmin(),
         ]);
     }
 
@@ -76,6 +77,7 @@ class TaskController extends Controller
     public function update(TaskUpdateRequest $request, Tasks $task)
     {
         $task->fill($request->validated());
+
         $task->save();
         return redirect(RouteServiceProvider::TASKS);
     }
@@ -85,7 +87,8 @@ class TaskController extends Controller
      */
     public function destroy(Tasks $task)
     {
-        $task->delete();
+        $task->active = !$task->active;
+        $task->save();
         return redirect(RouteServiceProvider::TASKS);
     }
 }

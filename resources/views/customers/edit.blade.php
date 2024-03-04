@@ -21,7 +21,6 @@
                             <x-group-input :name="__('name')" :value="$customer->name" />
                             <x-group-input :type="__('email')" :name="__('email')" :value="$customer->email" />
                             <x-group-input :type="__('tel')" :name="__('phone')" :value="$customer->phone">
-                                <small class="absolute dark:text-gray-400">Ej: +34123123123</small>
                             </x-group-input>
                             <x-group-input :name="__('cif')" :value="$customer->cif" />
                             <x-group-input :name="__('account_number')" :title="__('Account Number')" :value="$customer->account_number" />

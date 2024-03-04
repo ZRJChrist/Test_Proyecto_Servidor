@@ -39,7 +39,7 @@
                                     @php
                                         $statusCustomer = $customer->active == 1 ? 'green' : 'red';
                                         $colorStatus = $customer->active == 1 ? 'red' : 'indigo';
-                                        $textStatusBtn = $customer->active == 1 ? 'Deactivate' : 'Active';
+                                        $textStatusBtn = $customer->active == 1 ? 'Unsubscribe' : 'Reenable';
                                     @endphp
                                     <div
                                         class="md:flex md:border-0 md:m-0 my-2 mx-2 rounded-lg md:rounded-none border border-gray-400 grid grid-cols-1 md:bg-white bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700 transition ease-in-out duration-100 md:hover:dark:bg-gray-700 md:hover:bg-gray-100 ">
@@ -65,9 +65,11 @@
                                                     Info:
                                                 </span>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Registered') }}:
-                                                    {{ $customer->created_at }}</div>
+                                                    {{ \Carbon\Carbon::parse($customer->created_at)->format('d-M-Y H:i:s') }}
+                                                </div>
                                                 <div class="font-normal dark:text-gray-300">{{ __('Updated') }}:
-                                                    {{ $customer->updated_at }}</div>
+                                                    {{ \Carbon\Carbon::parse($customer->updated_at)->format('d-M-Y H:i:s') }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div
@@ -75,7 +77,7 @@
                                             <div class="ps-3">
                                                 <span class="md:hidden ">Status Customer:</span>
                                                 <x-badges :type="$statusCustomer">
-                                                    {{ __($customer->active == 1 ? 'Active' : 'Deactivated') }}
+                                                    {{ __($customer->active == 1 ? 'Actived' : 'Deactivated') }}
                                                 </x-badges>
                                             </div>
                                         </div>

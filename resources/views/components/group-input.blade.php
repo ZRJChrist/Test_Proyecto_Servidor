@@ -1,4 +1,4 @@
-@props(['title', 'name', 'type', 'icon', 'value' => null])
+@props(['title', 'name', 'type' => 'text', 'icon', 'value' => null, 'disabled' => false])
 
 @php
 
@@ -9,7 +9,8 @@
 
 @endphp
 <div {!! $attributes->merge(['class' => 'relative z-0 w-full mb-5 group mt-5']) !!}>
-    <x-text-input placeholder="" :id="$name" :type="$type" :name="$name" :value="$value" required />
+    <x-text-input placeholder="" :id="$name" :type="$type" :name="$name" :disabled="$disabled"
+        :value="$value" />
     <x-input-label for="$name" :icon="$icon" :value="$title" />
     <x-input-error :messages="$errors->get($name)" class="mt-2" />
     {{ $slot }}

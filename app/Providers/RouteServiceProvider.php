@@ -23,6 +23,11 @@ class RouteServiceProvider extends ServiceProvider
 
     public const CUSTOMERS = '/customers';
 
+    public const USER = '/employees';
+
+    public const PAYMENTS = '/payments';
+
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
